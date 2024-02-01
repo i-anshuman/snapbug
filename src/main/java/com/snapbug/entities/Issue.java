@@ -27,16 +27,11 @@ public class Issue {
   @Column(nullable = false)
   private String expectation;
 
-  @Column(name = "module_name", length = 50, nullable = false)
-  private String moduleName;
+  @ManyToOne
+  @JoinColumn(name = "screen_id", referencedColumnName = "screen_id", nullable = false)
+  private Screen screen;
 
-  @Column(name = "submodule_name", length = 50, nullable = false)
-  private String submoduleName;
-
-  @Column(name = "screen_name", length = 50, nullable = false)
-  private String screenName;
-
-  @Column(name = "reported_on", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @Column(name = "reported_on", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime reportedOn;
 
   @ManyToOne
@@ -49,7 +44,7 @@ public class Issue {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "reported_by", referencedColumnName = "user_id", nullable = false)
-  private User reportedBy;
+  private User reporter;
 
   @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY)
   private List<Action> actions;
