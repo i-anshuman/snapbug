@@ -34,7 +34,7 @@ public class User {
   @Column(nullable = false)
   private String password;
 
-  @Column(name = "join_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @Column(name = "join_date", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime joinDate;
 
   @ManyToOne
