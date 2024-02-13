@@ -1,6 +1,6 @@
 package com.snapbug.configs;
 
-import com.snapbug.security.AuthTokenFilter;
+import com.snapbug.security.AuthenticationTokenFilter;
 import com.snapbug.security.IJwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,8 +38,8 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public AuthTokenFilter getAuthTokenFilter(IJwtUtil jwtUtil, UserDetailsService userDetailsService) {
-    return new AuthTokenFilter(jwtUtil, userDetailsService);
+  public AuthenticationTokenFilter getAuthenticationTokenFilter(IJwtUtil jwtUtil, UserDetailsService userDetailsService) {
+    return new AuthenticationTokenFilter(jwtUtil, userDetailsService);
   }
 
   @Bean
@@ -59,16 +60,17 @@ public class SecurityConfiguration {
     return http
             .cors(AbstractHttpConfigurer::disable)
             .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .formLogin(FormLoginConfigurer::disable)
-            .httpBasic(config -> config.authenticationEntryPoint(authenticationEntryPoint))
+            .httpBasic(HttpBasicConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authorizeHttpRequests(authorize ->
               authorize
-                .requestMatchers("/admin/**", "/docs/**", "/swagger-ui/**").hasAuthority("Admin")
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/admin/**").hasAuthority("Admin")
+                .requestMatchers("/auth/**", "/docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(getAuthTokenFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(handler -> handler.authenticationEntryPoint(authenticationEntryPoint))
+            .addFilterBefore(getAuthenticationTokenFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class)
             .build();
   }
 }
