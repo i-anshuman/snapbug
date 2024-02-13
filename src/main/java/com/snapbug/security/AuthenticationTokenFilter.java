@@ -18,9 +18,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-public class AuthTokenFilter extends OncePerRequestFilter {
+public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
-  private static final Logger log = LoggerFactory.getLogger(AuthTokenFilter.class);
+  private static final Logger log = LoggerFactory.getLogger(AuthenticationTokenFilter.class);
 
   private final IJwtUtil jwtUtil;
   private final UserDetailsService userDetailsService;
@@ -37,7 +37,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   @Value("${security.token.prefix}")
   private String prefix;
 
-  public AuthTokenFilter(IJwtUtil jwtUtil, UserDetailsService userDetailsService) {
+  public AuthenticationTokenFilter(IJwtUtil jwtUtil, UserDetailsService userDetailsService) {
     this.jwtUtil = jwtUtil;
     this.userDetailsService = userDetailsService;
   }
@@ -51,7 +51,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authentication =
-          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+          UsernamePasswordAuthenticationToken.authenticated(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
