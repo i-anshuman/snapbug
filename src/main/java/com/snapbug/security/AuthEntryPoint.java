@@ -1,6 +1,5 @@
 package com.snapbug.security;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
   private String unauthorizedRequest;
 
   @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
     log.error("Unauthorized request: {}.", authException.getMessage());
     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, unauthorizedRequest);
   }
