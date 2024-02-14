@@ -2,7 +2,7 @@ package com.snapbug.controllers;
 
 import com.snapbug.dtos.AuthenticatedUserDTO;
 import com.snapbug.dtos.AuthenticationDTO;
-import com.snapbug.services.AuthenticationService;
+import com.snapbug.services.IAuthenticationService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +20,10 @@ public class AuthenticationController {
 
   private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
   
-  private final AuthenticationService authenticationService;
+  private final IAuthenticationService authenticationService;
 
   @Autowired
-  public AuthenticationController(AuthenticationService authenticationService) {
+  public AuthenticationController(IAuthenticationService authenticationService) {
     this.authenticationService = authenticationService;
   }
 
