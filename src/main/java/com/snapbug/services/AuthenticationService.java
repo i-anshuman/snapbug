@@ -3,6 +3,7 @@ package com.snapbug.services;
 import com.snapbug.dtos.AuthenticatedUserDTO;
 import com.snapbug.dtos.AuthenticationDTO;
 import com.snapbug.security.IJwtUtil;
+import com.snapbug.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +41,7 @@ public class AuthenticationService implements IAuthenticationService {
                                     .map(GrantedAuthority::getAuthority)
                                     .toList();
     return AuthenticatedUserDTO.builder()
+            .id(((UserDetailsImpl)principal).getId())
             .username(principal.getUsername())
             .authority(authority)
             .token(token)
