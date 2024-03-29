@@ -36,4 +36,8 @@ public class IssueCreationDTO {
   @NotNull(message = "{validation.issue.type}")
   @Positive(message = "{validation.issue.type.valid}")
   private Long type;
+
+  @NotNull(message = "{validation.issue.severity}")
+  @Positive(message = "{validation.issue.severity.valid}")
+  private Long severity;
 }
