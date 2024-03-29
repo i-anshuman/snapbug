@@ -42,6 +42,10 @@ public class Issue {
   @JoinColumn(name = "issue_type", referencedColumnName = "issue_type_id", nullable = false)
   private IssueType type;
 
+  @ManyToOne
+  @JoinColumn(name = "issue_severity", referencedColumnName = "severity_id", nullable = false)
+  private Severity severity;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "reported_by", referencedColumnName = "user_id", nullable = false)
   private User reporter;
