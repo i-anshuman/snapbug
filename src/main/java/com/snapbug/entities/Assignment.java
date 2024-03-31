@@ -26,6 +26,6 @@ public class Assignment {
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @Column(name = "assigned_on", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @Column(name = "assigned_on", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime assignedOn;
 }
