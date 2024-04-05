@@ -2,7 +2,6 @@ package com.snapbug.services;
 
 import com.snapbug.dtos.SubModuleCreationDTO;
 import com.snapbug.dtos.SubModuleDTO;
-import com.snapbug.entities.Module;
 import com.snapbug.entities.SubModule;
 import com.snapbug.mappers.SubModuleMapper;
 import com.snapbug.repositories.ISubModuleRepository;
@@ -32,18 +31,16 @@ public class SubModuleService implements ISubModuleService {
   @Override
   public List<SubModuleDTO> getAll() {
     return subModuleRepository
-            .findAll()
+            .getAll()
             .stream()
-            .map(subModuleMapper::modelToDto)
             .toList();
   }
 
   @Override
   public List<SubModuleDTO> getAll(Long moduleId) {
     return subModuleRepository
-            .findByModule(Module.builder().id(moduleId).build())
+            .getByModule(moduleId)
             .stream()
-            .map(subModuleMapper::modelToDto)
             .toList();
   }
 

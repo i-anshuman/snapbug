@@ -3,7 +3,6 @@ package com.snapbug.services;
 import com.snapbug.dtos.ScreenCreationDTO;
 import com.snapbug.dtos.ScreenDTO;
 import com.snapbug.entities.Screen;
-import com.snapbug.entities.SubModule;
 import com.snapbug.mappers.ScreenMapper;
 import com.snapbug.repositories.IScreenRepository;
 import jakarta.transaction.Transactional;
@@ -32,18 +31,16 @@ public class ScreenService implements IScreenService {
   @Override
   public List<ScreenDTO> getAll() {
     return screenRepository
-            .findAll()
+            .getAll()
             .stream()
-            .map(screenMapper::modelToDto)
             .toList();
   }
 
   @Override
   public List<ScreenDTO> getAll(Long subModuleId) {
     return screenRepository
-            .findBySubModule(SubModule.builder().id(subModuleId).build())
+            .getBySubModule(subModuleId)
             .stream()
-            .map(screenMapper::modelToDto)
             .toList();
   }
 
