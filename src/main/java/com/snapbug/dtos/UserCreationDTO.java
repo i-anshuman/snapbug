@@ -13,8 +13,8 @@ import lombok.ToString;
 @ToString(doNotUseGetters = true, exclude = "password")
 public class UserCreationDTO {
 
-  @NotBlank(message = "{validation.user.fullname}")
-  private String fullname;
+  @NotBlank(message = "{validation.user.name}")
+  private String name;
 
   @NotBlank(message = "{validation.user.email}")
   @Email(message = "{validation.user.email.invalid}")
