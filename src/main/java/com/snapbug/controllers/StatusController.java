@@ -43,7 +43,7 @@ public class StatusController {
   @GetMapping(path = "/")
   public ResponseEntity<List<StatusDTO>> getAll() {
     final List<StatusDTO> status = statusService.getAll();
-    log.info("[GET /status]: {} severities found.", status.size());
+    log.info("[GET /status]: {} status found.", status.size());
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(status);
   }
 
