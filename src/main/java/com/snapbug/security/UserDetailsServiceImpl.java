@@ -2,6 +2,7 @@ package com.snapbug.security;
 
 import com.snapbug.entities.User;
 import com.snapbug.repositories.IUserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
   private final IUserRepository userRepository;
@@ -32,8 +34,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         .findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException(invalidCredential));
 
-    List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().getName()));
-
+    final List<? extends GrantedAuthority> authorities = user.getRole()
+                                                             .getPermissions()
+                                                             .stream()
+                                                             .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                                                             .toList();
     return UserDetailsImpl.builder()
             .id(user.getId())
             .email(user.getEmail())
