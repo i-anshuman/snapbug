@@ -15,6 +15,9 @@ public class UserDetailsImpl implements UserDetails {
   @Getter
   private String email;
 
+  @Getter
+  private String role;
+
   private String username;
 
   private String password;

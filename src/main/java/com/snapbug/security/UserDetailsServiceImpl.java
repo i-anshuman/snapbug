@@ -1,5 +1,6 @@
 package com.snapbug.security;
 
+import com.snapbug.entities.Role;
 import com.snapbug.entities.User;
 import com.snapbug.repositories.IUserRepository;
 import jakarta.transaction.Transactional;
@@ -34,13 +35,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         .findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException(invalidCredential));
 
-    final List<? extends GrantedAuthority> authorities = user.getRole()
-                                                             .getPermissions()
+    final Role role = user.getRole();
+    final List<? extends GrantedAuthority> authorities = role.getPermissions()
                                                              .stream()
                                                              .map(permission -> new SimpleGrantedAuthority(permission.getName()))
                                                              .toList();
     return UserDetailsImpl.builder()
             .id(user.getId())
+            .role(role.getName())
             .email(user.getEmail())
             .username(user.getUsername())
             .password(user.getPassword())

@@ -45,6 +45,7 @@ public class AuthenticationService implements IAuthenticationService {
             .username(principal.getUsername())
             .authority(authority)
             .token(token)
+            .role(((UserDetailsImpl)principal).getRole())
             .build();
   }
 }
