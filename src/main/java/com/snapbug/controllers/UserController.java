@@ -2,6 +2,7 @@ package com.snapbug.controllers;
 
 import com.snapbug.dtos.UserCreationDTO;
 import com.snapbug.dtos.UserDTO;
+import com.snapbug.dtos.UserListDTO;
 import com.snapbug.services.IUserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/user")
@@ -30,5 +33,12 @@ public class UserController {
     final UserDTO user = userService.create(userDto);
     log.info("[POST /user]: User created: {}", user);
     return ResponseEntity.status(HttpStatus.CREATED).body(user);
+  }
+
+  @GetMapping(path = "/")
+  public ResponseEntity<List<UserListDTO>> getAll() {
+    final List<UserListDTO> users = userService.getAll();
+    log.info("[GET /user]: {} users found.", users.size());
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(users);
   }
 }

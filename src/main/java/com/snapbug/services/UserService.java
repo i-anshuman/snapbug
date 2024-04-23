@@ -2,6 +2,7 @@ package com.snapbug.services;
 
 import com.snapbug.dtos.UserCreationDTO;
 import com.snapbug.dtos.UserDTO;
+import com.snapbug.dtos.UserListDTO;
 import com.snapbug.entities.User;
 import com.snapbug.exceptions.UserException;
 import com.snapbug.mappers.UserMapper;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -54,5 +57,10 @@ public class UserService implements IUserService {
     final User user = userMapper.dtoToModel(userDto);
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
     return userMapper.modelToDto(userRepository.save(user));
+  }
+
+  @Override
+  public List<UserListDTO> getAll() {
+    return userRepository.getAll();
   }
 }
